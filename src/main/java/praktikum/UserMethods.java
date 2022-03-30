@@ -8,7 +8,6 @@ import static io.restassured.RestAssured.given;
 public class UserMethods extends RestAssured {
 
     private final String USER_PATH = "api/auth/";
-    private String accessToken;
 
     @Step("Create user")
     public ValidatableResponse createUser(User user) {

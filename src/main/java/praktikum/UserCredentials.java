@@ -2,12 +2,15 @@ package praktikum;
 
 public class UserCredentials {
 
-    public final String password;
-    public final String email;
+    public String password;
+    public String email;
 
     public UserCredentials(String password, String email) {
         this.password = password;
         this.email = email;
+    }
+
+    public UserCredentials() {
     }
 
     public static UserCredentials getUserCredentials(User user) {

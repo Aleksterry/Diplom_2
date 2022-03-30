@@ -6,9 +6,9 @@ import org.apache.commons.lang3.RandomStringUtils;
 
 public class User {
 
-    public final String name;
-    public final String password;
-    public final String email;
+    public String name;
+    public String password;
+    public String email;
 
     public User(String name, String password, String email) {
         this.name = name;
@@ -16,6 +16,8 @@ public class User {
         this.email = email;
     }
 
+    public User() {
+    }
 
     public static User getRandom() {
         Faker faker = new Faker();
