@@ -12,8 +12,5 @@ public class Order {
         this.ingredients = ingredients;
     }
 
-    public Order() {
-        this.ingredients = ingredients;
-    }
-
+    public Order(){}
 }

@@ -1,5 +1,6 @@
 package praktikum;
 
+import io.qameta.allure.Step;
 import io.restassured.response.ValidatableResponse;
 
 import static io.restassured.RestAssured.given;
@@ -7,10 +8,9 @@ import static io.restassured.RestAssured.given;
 public class OrderMethods extends RestAssured {
 
     private final String ORDER_PATH = "api/orders/";
-    private String accessToken;
 
-
-    public ValidatableResponse create(Order order, String accessToken) {
+    @Step("Create order")
+    public ValidatableResponse createOrder(Order order, String accessToken) {
         return given()
                 .spec(getBaseSpec())
                 .auth().oauth2(accessToken)
@@ -21,6 +21,7 @@ public class OrderMethods extends RestAssured {
                 .log().all();
     }
 
+    @Step("Get user orders")
     public ValidatableResponse getUserOrders(String accessToken) {
         return given()
                 .spec(getBaseSpec())
@@ -40,5 +41,4 @@ public class OrderMethods extends RestAssured {
                 .then()
                 .log().all();
     }
-
 }

@@ -14,54 +14,42 @@ public class GetUserOrdersWithTokenTest {
 
     private OrderMethods orderMethods;
     private UserMethods userMethods;
-    private GetIngredients getIngredients;
+    private Ingredients ingredients;
     private String accessToken;
+    private BasePage basePage;
 
 
     @Before
     public void setup() {
         orderMethods = new OrderMethods();
         userMethods = new UserMethods();
-        getIngredients = new GetIngredients();
+        ingredients = new Ingredients();
+        basePage = new BasePage();
+
+        // Создание пользователя, получение токена
+        User user = User.getRandom();
+        accessToken = basePage.createUser(user, userMethods);
+    }
+
+
+    @Step("Create order")
+    public void createOrder() {
+        // Формирование тела запроса заказа
+        Order order = new Order(ingredients.getIngredients());
+        // Создание заказа
+        orderMethods.createOrder(order, accessToken.substring(7)).assertThat().statusCode(200);
     }
 
     @After
-    @Step("After test: send DELETE request to api/auth/user - to delete user")
     public void tearDown() {
-        if (accessToken != null) {
-            ValidatableResponse response = userMethods.delete(accessToken.substring(7));
-            if (response.extract().statusCode() == 202) {
-                System.out.println("\nuser is deleted\n");
-            } else {
-                System.out.println("\nuser was not be deleted\n");
-            }
-        }
-    }
-
-    @Step("Before test: send POST request to /api/register - to create user")
-    public void createUser() {
-
-        // Создание пользователя
-        accessToken = userMethods.create(User.getRandom()).assertThat().statusCode(200).and().extract().path("accessToken");
-    }
-
-    @Step("Before test: send POST request to api/orders - to create order")
-    public void createOrder() {
-
-        // Формирование тела запроса заказа
-        Order order = new Order(getIngredients.getIngredients());
-
-        // Создание заказа
-        ValidatableResponse response = orderMethods.create(order, accessToken.substring(7)).assertThat().statusCode(200);
+        // Удаление пользователя
+        basePage.deleteUser(accessToken, userMethods);
     }
 
 
     @Test
     @Description("User order list test")
     public void testCreateOrderPositive() {
-
-        // Создание пользователя
-        createUser();
 
         // Создание заказа
         createOrder();
@@ -82,7 +70,5 @@ public class GetUserOrdersWithTokenTest {
                         "orders.number", notNullValue(),
                         "total", notNullValue(),
                         "totalToday", notNullValue());
-
-        // Запись данных заказа для последующего удаления
     }
 }

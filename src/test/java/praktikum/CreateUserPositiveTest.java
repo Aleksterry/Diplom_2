@@ -15,33 +15,26 @@ public class CreateUserPositiveTest {
 
     private UserMethods userMethods;
     private String accessToken;
+    private BasePage basePage;
 
 
     @Before
     public void setup() {
         userMethods = new UserMethods();
+        basePage = new BasePage();
     }
 
 
-    @After
-    @Step("After test: send DELETE request to api/auth/user - to delete user")
-    public void tearDown() {
-        if (accessToken != null) {
-            ValidatableResponse response = userMethods.delete(accessToken.substring(7));
-            if (response.extract().statusCode() == 202) {
-                System.out.println("\nuser is deleted\n");
-            } else {
-                System.out.println("\nuser was not be deleted\n");
-            }
-        }
-    }
-
-
-    @Step("After test: get user accessToken from response")
+    @Step("Get user accessToken")
     public void getUserAccessToken(ValidatableResponse response) {
-
         // Запись accessToken пользователя для последующего удаления
         accessToken = response.extract().path("accessToken");
+    }
+
+    @After
+    public void tearDown() {
+        // Удаление пользователя
+        basePage.deleteUser(accessToken, userMethods);
     }
 
 
@@ -49,10 +42,9 @@ public class CreateUserPositiveTest {
     @Description("User creation test")
     public void testCreateUserPositive() {
 
-        User user = User.getRandom();
-
         // Создание пользователя
-        ValidatableResponse response = userMethods.create(user);
+        User user = User.getRandom();
+        ValidatableResponse response = userMethods.createUser(user);
 
         // Проверка ответа
         response.assertThat().statusCode(200)
@@ -64,5 +56,4 @@ public class CreateUserPositiveTest {
         // Запись токена пользователя для последующего удаления
         getUserAccessToken(response);
     }
-
 }

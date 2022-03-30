@@ -1,7 +1,6 @@
 package praktikum;
 
 import io.qameta.allure.Description;
-import io.qameta.allure.Step;
 import io.restassured.response.ValidatableResponse;
 import org.junit.After;
 import org.junit.Before;
@@ -14,36 +13,24 @@ import static org.hamcrest.Matchers.notNullValue;
 public class CreateOrderWithTokenTest {
 
     private OrderMethods orderMethods;
-    private GetIngredients getIngredients;
+    private Ingredients ingredients;
     private UserMethods userMethods;
     private String accessToken;
+    private BasePage basePage;
 
 
     @Before
     public void setup() {
         orderMethods = new OrderMethods();
-        getIngredients = new GetIngredients();
+        ingredients = new Ingredients();
         userMethods = new UserMethods();
+        basePage = new BasePage();
     }
 
     @After
-    @Step("After test: send DELETE request to api/auth/user - to delete user")
     public void tearDown() {
-        if (accessToken != null) {
-            ValidatableResponse response = userMethods.delete(accessToken.substring(7));
-            if (response.extract().statusCode() == 202) {
-                System.out.println("\nuser is deleted\n");
-            } else {
-                System.out.println("\nuser was not be deleted\n");
-            }
-        }
-    }
-
-    @Step("Before test: send POST request to /api/register - to create user")
-    public void createUser() {
-
-        // Создание пользователя
-        accessToken = userMethods.create(User.getRandom()).assertThat().statusCode(200).and().extract().path("accessToken");
+        // Удаление пользователя
+        basePage.deleteUser(accessToken, userMethods);
     }
 
 
@@ -51,14 +38,15 @@ public class CreateOrderWithTokenTest {
     @Description("Order creation test")
     public void testCreateOrderPositive() {
 
-        // Создание пользователя
-        createUser();
+        // Создание пользователя, получение токена
+        User user = User.getRandom();
+        accessToken = basePage.createUser(user, userMethods);
 
         // Формирование тела запроса заказа
-        Order order = new Order(getIngredients.getIngredients());
+        Order order = new Order(ingredients.getIngredients());
 
         // Создание заказа
-        ValidatableResponse response = orderMethods.create(order, accessToken.substring(7));
+        ValidatableResponse response = orderMethods.createOrder(order, accessToken.substring(7));
 
         // Проверка ответа
         response.assertThat().statusCode(200)
@@ -88,8 +76,5 @@ public class CreateOrderWithTokenTest {
                         "order.createdAt", notNullValue(),
                         "order.updatedAt", notNullValue(),
                         "order.price", notNullValue());
-
-        // Запись данных заказа для последующего удаления
     }
-
 }

@@ -12,13 +12,13 @@ import static org.hamcrest.Matchers.notNullValue;
 public class CreateOrderWithoutTokenTest {
 
     private OrderMethods orderMethods;
-    private GetIngredients getIngredients;
+    private Ingredients ingredients;
 
 
     @Before
     public void setup() {
         orderMethods = new OrderMethods();
-        getIngredients = new GetIngredients();
+        ingredients = new Ingredients();
     }
 
 
@@ -27,10 +27,10 @@ public class CreateOrderWithoutTokenTest {
     public void testCreateOrderPositive() {
 
         // Формирование тела запроса заказа
-        Order order = new Order(getIngredients.getIngredients());
+        Order order = new Order(ingredients.getIngredients());
 
         // Создание заказа
-        ValidatableResponse response = orderMethods.create(order, "");
+        ValidatableResponse response = orderMethods.createOrder(order, "");
 
         // Проверка ответа
         response.assertThat().statusCode(200)
@@ -44,7 +44,5 @@ public class CreateOrderWithoutTokenTest {
                         "order.createdAt", nullValue(),
                         "order.updatedAt", nullValue(),
                         "order.price", nullValue());
-
-        // Запись данных заказа для последующего удаления
     }
 }
