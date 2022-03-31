@@ -7,7 +7,7 @@ import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 
-public class GetUserOrdersWithoutTokenTest {
+public class GetUserOrdersWithoutTokenTest extends BasePage {
 
     private OrderMethods orderMethods;
 

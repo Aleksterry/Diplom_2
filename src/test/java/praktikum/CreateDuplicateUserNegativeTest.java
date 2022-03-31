@@ -13,19 +13,17 @@ public class CreateDuplicateUserNegativeTest extends BasePage {
 
     private UserMethods userMethods;
     private String accessToken;
-    private BasePage basePage;
 
 
     @Before
     public void setup() {
         userMethods = new UserMethods();
-        basePage = new BasePage();
     }
 
     @After
     public void tearDown() {
         // Удаление пользователя
-        basePage.deleteUser(accessToken, userMethods);
+        deleteUser(accessToken, userMethods);
     }
 
 
@@ -36,7 +34,7 @@ public class CreateDuplicateUserNegativeTest extends BasePage {
 
         // Создание пользователя, получение токена
         User user = User.getRandom();
-        accessToken = basePage.createUser(user, userMethods);
+        accessToken = createUser(user, userMethods);
 
         // Создание пользователя с теми же данными
         ValidatableResponse response = userMethods.createUser(user);

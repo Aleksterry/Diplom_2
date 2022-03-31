@@ -10,13 +10,12 @@ import org.junit.Test;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
 
-public class GetUserOrdersWithTokenTest {
+public class GetUserOrdersWithTokenTest extends BasePage {
 
     private OrderMethods orderMethods;
     private UserMethods userMethods;
     private Ingredients ingredients;
     private String accessToken;
-    private BasePage basePage;
 
 
     @Before
@@ -24,11 +23,10 @@ public class GetUserOrdersWithTokenTest {
         orderMethods = new OrderMethods();
         userMethods = new UserMethods();
         ingredients = new Ingredients();
-        basePage = new BasePage();
 
         // Создание пользователя, получение токена
         User user = User.getRandom();
-        accessToken = basePage.createUser(user, userMethods);
+        accessToken = createUser(user, userMethods);
     }
 
 
@@ -43,7 +41,7 @@ public class GetUserOrdersWithTokenTest {
     @After
     public void tearDown() {
         // Удаление пользователя
-        basePage.deleteUser(accessToken, userMethods);
+        deleteUser(accessToken, userMethods);
     }
 
 

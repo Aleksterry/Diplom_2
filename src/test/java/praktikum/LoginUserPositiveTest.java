@@ -9,22 +9,20 @@ import org.junit.Test;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
 
-public class LoginUserPositiveTest {
+public class LoginUserPositiveTest extends BasePage {
 
     private UserMethods userMethods;
     private String accessToken;
-    private BasePage basePage;
 
     @Before
     public void setup() {
         userMethods = new UserMethods();
-        basePage = new BasePage();
     }
 
     @After
     public void tearDown() {
         // Удаление пользователя
-        basePage.deleteUser(accessToken, userMethods);
+        deleteUser(accessToken, userMethods);
     }
 
 
@@ -34,7 +32,7 @@ public class LoginUserPositiveTest {
 
         // Создание пользователя, получение токена
         User user = User.getRandom();
-        accessToken = basePage.createUser(user, userMethods);
+        accessToken = createUser(user, userMethods);
 
         // Авторизация пользователя
         ValidatableResponse response = userMethods.loginUser(new UserCredentials(user.password, user.email));

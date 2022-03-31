@@ -10,13 +10,12 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
 
 
-public class CreateOrderWithTokenTest {
+public class CreateOrderWithTokenTest extends BasePage {
 
     private OrderMethods orderMethods;
     private Ingredients ingredients;
     private UserMethods userMethods;
     private String accessToken;
-    private BasePage basePage;
 
 
     @Before
@@ -24,13 +23,12 @@ public class CreateOrderWithTokenTest {
         orderMethods = new OrderMethods();
         ingredients = new Ingredients();
         userMethods = new UserMethods();
-        basePage = new BasePage();
     }
 
     @After
     public void tearDown() {
         // Удаление пользователя
-        basePage.deleteUser(accessToken, userMethods);
+        deleteUser(accessToken, userMethods);
     }
 
 
@@ -40,7 +38,7 @@ public class CreateOrderWithTokenTest {
 
         // Создание пользователя, получение токена
         User user = User.getRandom();
-        accessToken = basePage.createUser(user, userMethods);
+        accessToken = createUser(user, userMethods);
 
         // Формирование тела запроса заказа
         Order order = new Order(ingredients.getIngredients());

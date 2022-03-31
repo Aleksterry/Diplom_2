@@ -12,14 +12,13 @@ import org.junit.runners.Parameterized;
 import static org.hamcrest.CoreMatchers.equalTo;
 
 @RunWith(Parameterized.class)
-public class LoginUserParameterizedNegativeTest {
+public class LoginUserParameterizedNegativeTest extends BasePage {
 
     private final boolean success;
     private final String message;
     private final UserCredentials userCredentials;
     private UserMethods userMethods;
     private String accessToken;
-    private BasePage basePage;
 
     public LoginUserParameterizedNegativeTest(UserCredentials userCredentials, boolean success, String message) {
         this.userCredentials = userCredentials;
@@ -42,16 +41,15 @@ public class LoginUserParameterizedNegativeTest {
     @Before
     public void setup() {
         userMethods = new UserMethods();
-        basePage = new BasePage();
 
         // создание пользователя, получение токена
-        accessToken = basePage.createUser(User.getRandomWithoutPassAndEmail("12345678", "apitest@yandex.ru"), userMethods);
+        accessToken = createUser(User.getRandomWithoutPassAndEmail("12345678", "apitest@yandex.ru"), userMethods);
     }
 
     @After
     public void tearDown() {
         // Удаление пользователя
-        basePage.deleteUser(accessToken, userMethods);
+        deleteUser(accessToken, userMethods);
     }
 
 

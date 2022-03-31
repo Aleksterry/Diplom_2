@@ -14,20 +14,18 @@ public class CreateOrderWithoutIngredientsNegativeTest extends BasePage {
     private OrderMethods orderMethods;
     private UserMethods userMethods;
     private String accessToken;
-    private BasePage basePage;
 
 
     @Before
     public void setup() {
         orderMethods = new OrderMethods();
         userMethods = new UserMethods();
-        basePage = new BasePage();
     }
 
     @After
     public void tearDown() {
         // Удаление пользователя
-        basePage.deleteUser(accessToken, userMethods);
+        deleteUser(accessToken, userMethods);
     }
 
 
@@ -37,7 +35,7 @@ public class CreateOrderWithoutIngredientsNegativeTest extends BasePage {
 
         // Создание пользователя, получение токена
         User user = User.getRandom();
-        accessToken = basePage.createUser(user, userMethods);
+        accessToken = createUser(user, userMethods);
 
         // Формирование тела запроса заказа
         Order order = new Order();

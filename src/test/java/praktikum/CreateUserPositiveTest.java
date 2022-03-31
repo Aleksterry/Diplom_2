@@ -11,17 +11,15 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
 
 
-public class CreateUserPositiveTest {
+public class CreateUserPositiveTest extends BasePage {
 
     private UserMethods userMethods;
     private String accessToken;
-    private BasePage basePage;
 
 
     @Before
     public void setup() {
         userMethods = new UserMethods();
-        basePage = new BasePage();
     }
 
 
@@ -34,7 +32,7 @@ public class CreateUserPositiveTest {
     @After
     public void tearDown() {
         // Удаление пользователя
-        basePage.deleteUser(accessToken, userMethods);
+        deleteUser(accessToken, userMethods);
     }
 
 

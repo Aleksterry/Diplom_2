@@ -9,7 +9,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.Matchers.notNullValue;
 
-public class CreateOrderWithoutTokenTest {
+public class CreateOrderWithoutTokenTest extends BasePage {
 
     private OrderMethods orderMethods;
     private Ingredients ingredients;

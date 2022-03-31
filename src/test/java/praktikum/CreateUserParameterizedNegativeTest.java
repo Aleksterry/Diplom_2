@@ -12,7 +12,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 
 
 @RunWith(Parameterized.class)
-public class CreateUserParameterizedNegativeTest {
+public class CreateUserParameterizedNegativeTest extends BasePage {
 
     private final User user;
     private final boolean success;
